@@ -106,6 +106,3 @@ def image_callback(img_msg):
 rospy.Subscriber('/zed/image_raw', Image, image_callback)
 
 rospy.spin()
-
-
-#hussein & mahmoud
