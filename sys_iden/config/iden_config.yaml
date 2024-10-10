@@ -1,0 +1,39 @@
+#sys_iden configuration
+IMU_Q: #IMU quaternion for transformation to AUV C.G.
+- 0.7071068
+- 0.0
+- 0.7071068
+- 0.0
+IMU_T: #IMU translation for transformation to AUV C.G.
+- 0.0
+- 0.0
+- -0.145
+PS_Q: #Psensor quaternion for transformation to AUV C.G.
+- 0.0
+- 0.0
+- 0.0
+- 1.0
+PS_T: #Psensor translation for transformation to AUV C.G.
+- 0.0
+- 0.0
+- 0.25
+Lim: 6.0
+L_hor: 0.6
+L_ver: 0.4
+L_arm: 0.8
+C_Gains:
+- - 1 #kp roll
+  - 1 #ki roll
+  - 1 #kd roll
+- - 2 #kp pitch
+  - 2 #ki pitch
+  - 2 #kd pitch
+- - 3 #kp yaw
+  - 3 #ki yaw
+  - 3 #kd yaw
+- - 4 #kp depth
+  - 4 #ki depth
+  - 4 #kd depth 
+
+
+

@@ -1,0 +1,17 @@
+#sys_iden configuration
+C_Gains:
+- - 2 #kp roll
+  - 0 #ki roll
+  - 0.1 #kd roll
+- - 2 #kp pitch
+  - 0 #ki pitch
+  - 0.1 #kd pitch
+- - 2 #kp yaw
+  - 0 #ki yaw
+  - 0.1 #kd yaw
+- - 20 #kp depth
+  - 0 #ki depth
+  - 2 #kd depth 
+
+
+

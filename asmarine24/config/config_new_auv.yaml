@@ -1,0 +1,118 @@
+# sys_iden configuration
+
+# Control gains for stabilization
+C_Gains:
+- - 2 #kp roll
+  - 0 #ki roll
+  - 0.1 #kd roll
+- - 3 #kp pitch
+  - 0.5 #ki pitch 0.6
+  - 0.3 #kd pitch 0.5
+- - 22 #kp yaw 11
+  - 2.6 #ki yaw 2
+  - 0.5 #kd yaw
+- - 60 #kp depth
+  - 1 #ki depth
+  - 1 #kd depth
+  
+# Child frames
+Frames:
+- - "T1" # Thruster 1 child frame
+  - "T2" # Thruster 2 child frame
+  - "T3" # Thruster 3 child frame
+  - "T4" # Thruster 4 child frame
+  - "T5" # Thruster 5 child frame
+  - "T6" # Thruster 6 child frame
+  - "T7" # Thruster 7 child frame
+  - "T8" # Thruster 8 child frame
+  - "IMU" # IMU child frame
+  - "pressure sensor" # pressure sensor child frame
+
+# translation and orientation for mentioned frames
+#  in the same order [x,y,z,x_quat,y_quat,z_quat,w_quat]
+tf:
+# th1
+- - 0.3857
+  - 0.2463
+  - 0.1895
+  - 0.0
+  - 0.0
+  - -0.3826834
+  - 0.9238795
+# th2
+- - 0.3857
+  - -0.2463
+  - 0.1895
+  - 0.0
+  - 0.0
+  - 0.3826834
+  - 0.9238795
+# th3
+- - -0.3857
+  - -0.2463
+  - 0.1895
+  - 0.0
+  - 0.0
+  - -0.3826834
+  - 0.9238795
+# th4
+- - -0.3857
+  - 0.2463
+  - 0.1895
+  - 0.0
+  - 0.0
+  - 0.3826834
+  - 0.9238795
+# th5
+- - 0.143
+  - 0.1945
+  - 0.11
+  - 0.0
+  - -0.7071068
+  - 0.0
+  - 0.7071068
+# th6
+- - 0.143
+  - -0.1945
+  - 0.11
+  - 0.0
+  - -0.7071068
+  - 0.0
+  - 0.7071068
+# th7
+- - -0.143
+  - -0.1945
+  - 0.11
+  - 0.0
+  - -0.7071068
+  - 0.0
+  - 0.7071068
+# th8
+- - -0.143
+  - 0.1945
+  - 0.11
+  - 0.0
+  - -0.7071068
+  - 0.0
+  - 0.7071068
+# IMU
+- - 0.145
+  - 0.0
+  - 0.0
+  - 0.7071068
+  - 0.0
+  - 0.7071068
+  - 0.0
+# pressure
+- - -0.25
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+
+
+
+
+

@@ -1,0 +1,18 @@
+<launch>
+	<rosparam file="$(find asmarine24)/config/config_new_auv.yaml" />
+	<node name="serial_node"        pkg="rosserial_python"      type="serial_node.py" output="screen">
+		<param name="port"              type="string"               value="/dev/ttyACM0"/>
+ 		<param name="baud"              type="int"                  value="57600"/>
+	</node>
+	<!-- Delay to stabilize low level -->
+	<arg name = "excitation_state"/>
+	<arg name="node_start_delay" default="15.0" /> 
+    
+	<!-- Launch the sys_idn_node.py node with specified parameters -->
+	<node name="sdk_node" pkg="asmarine24" type="AS24_SDK_V2.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+	<node name="sys_iden" pkg="asmarine24" type="AS24_SysIden.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' ">
+		<param name="excitation_state" value="$(arg excitation_state)"/>
+	</node>
+	<!--node pkg="rosbag" type="record" name="recorder" output="screen" args="-a -O ~/catkin_ws/depth.bag" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " /-->
+
+</launch>

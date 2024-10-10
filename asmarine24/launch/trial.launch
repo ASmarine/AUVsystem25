@@ -1,0 +1,5 @@
+<launch>
+    <!-- Node to run the ORB_SLAM3 Stereo command -->
+    <node name="orb_slam3_stereo" pkg="ORB_SLAM3" type="Stereo" output="screen" args="$(find ORB_SLAM3)/Vocabulary/ORBvoc.txt $(find ORB_SLAM3)/Examples_old/Stereo/Z1_640x360_UW.yaml true" />
+</launch>
+

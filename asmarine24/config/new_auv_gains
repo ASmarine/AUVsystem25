@@ -1,0 +1,44 @@
+#x_forward gains
+C_Gains:
+- - 2 #kp roll
+  - 0 #ki roll
+  - 0.1 #kd roll
+- - 16.2 #kp pitch
+  - 4 #ki pitch
+  - 0.5 #kd pitch
+- - 10 #kp yaw
+  - 3 #ki yaw
+  - 0.5 #kd yaw
+- - 60 #kp depth
+  - 1 #ki depth
+  - 1 #kd depth
+  
+  
+#x_backward gains
+C_Gains:
+- - 2 #kp roll
+  - 0 #ki roll
+  - 0.1 #kd roll
+- - 11 #kp pitch
+  - 1.5 #ki pitch
+  - 1 #kd pitch
+- - 16 #kp yaw
+  - 3 #ki yaw
+  - 0.5 #kd yaw
+- - 60 #kp depth
+  - 1 #ki depth
+  - 1 #kd depth
+  
+# positve y
+- - 2 #kp roll
+  - 0 #ki roll
+  - 0.5 #kd roll
+- - 4 #kp pitch
+  - 1 #ki pitch
+  - 0.1 #kd pitch
+- - 3.5 #kp yaw
+  - 1 #ki yaw
+  - 0.1 #kd yaw
+- - 20 #kp depth
+  - 0 #ki depth
+  - 2 #kd depth  

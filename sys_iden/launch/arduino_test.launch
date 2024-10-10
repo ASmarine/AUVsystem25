@@ -1,0 +1,9 @@
+<launch>
+    <node name="serial_node"        pkg="rosserial_python"      type="serial_node.py" output="screen">
+        <param name="port"              type="string"               value="/dev/ttyACM0"/>
+        <param name="baud"              type="int"                  value="57600"/>
+    </node>
+    <arg name="node_start_delay" default="15.0" /> 
+    <node pkg="sys_iden" type="thrust_controller_node.py" name="Thruster_Controller_Node" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+    <node pkg="sys_iden" type="test_wrench_node.py" name="wrench_publisher" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+</launch>

@@ -1,0 +1,8 @@
+<launch>
+    <rosparam file="$(find sys_iden)/config/iden_config.yaml" />
+    <!--<arg name = "exp"/>-->
+    <node pkg="sys_iden" type="sense_proc.py" name="sense_proc_node" output="screen">
+        <!-- <param name="exp" value="$(arg exp)"/> -->
+        </node>
+    <node pkg="sys_iden" type="trial.py" name="trial_node" output="screen"/>
+</launch>

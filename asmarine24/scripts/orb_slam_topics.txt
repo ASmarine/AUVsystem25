@@ -1,0 +1,5 @@
+
+topic to be recorded in orb slam
+
+/zed/zed_node/left/image_rect_color
+/orb_slam3/camera_pose
