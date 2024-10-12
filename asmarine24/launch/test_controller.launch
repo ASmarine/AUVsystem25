@@ -1,0 +1,14 @@
+<launch>
+    <arg name="port" default="/dev/input/js1"/>
+    <!-- for a ps5 controller -->
+
+    <!-- Set the device parameter for the joy node -->
+    <param name="joy_node/dev" value="$(arg port)" />
+
+    <!-- Launch the joy node -->
+    <node name="joy_node" pkg="joy" type="joy_node" output="screen" />
+
+    <!-- Add the new node joystick_node.py -->
+    <node name="joystick_node" pkg="asmarine24" type="joystick_node.py" output="screen" />
+
+</launch>

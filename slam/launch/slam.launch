@@ -1,0 +1,14 @@
+<launch>
+    <!-- load parameters from yaml file -->
+    <rosparam command="load" file="$(find slam)/config/auv_param.yaml"/>
+    
+    <!-- run orb slam -->
+
+    <!-- run prception node -->
+
+    <!-- run slam node -->
+     <include file="$(find asmarine24)/launch/test_controller.launch"/>
+     
+     <node pkg="slam" type="EKFO_landmarks.py" name="slam_node" output="screen"/>
+        
+</launch>

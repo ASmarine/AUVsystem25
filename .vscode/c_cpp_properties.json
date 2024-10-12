@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/radojr/catkin_workspace/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/radojr/AUVsystem25/src/asmarine24/include/**",
+        "/home/radojr/catkin_workspace/src/localization/include/**",
+        "/home/radojr/catkin_workspace/src/mapping/include/**",
+        "/home/radojr/catkin_workspace/src/utils/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

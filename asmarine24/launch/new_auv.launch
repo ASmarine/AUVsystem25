@@ -1,4 +1,6 @@
 <launch>
+    <arg name="ps5" default="true"/>
+    
     <rosparam file="$(find asmarine24)/config/config_new_auv.yaml" />
     
     <node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen">
@@ -15,8 +17,11 @@
     <!-- Launch the sys_idn_node.py node with specified parameters -->
     <node name="sdk_node" pkg="asmarine24" type="AS24_SDK_V2.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
 
-    <!-- Add the new node keyboard_trial.py -->
-    <node name="keyboard_trial" pkg="asmarine24" type="keyboard_trial.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+    <group if="$(arg ps5)">
+        <node name="joy_node" pkg="asmarine24" type="joystick_node" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+    </group>
+    <group unless="$(arg ps5)">
+        <node name="keyboard_trial" pkg="asmarine24" type="keyboard_trial.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+    </group>
 
 </launch>
-

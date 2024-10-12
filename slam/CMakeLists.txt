@@ -1,27 +1,29 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(asmarine24)
+project(slam)
 
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
   rospy
   geometry_msgs
   sensor_msgs
+  tf
 )
 
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES asmarine24
-#  CATKIN_DEPENDS roscpp rospy
+#  LIBRARIES slam
+#  CATKIN_DEPENDS geometry_msgs rospy sensor_msgs tf
 #  DEPENDS system_lib
 )
 
 include_directories(
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
 catkin_python_setup()
 
 catkin_install_python(PROGRAMS
-  scripts/joystick_node.py
+  scripts/EKFO_landmarks.py
+  scripts/test_wrench.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
