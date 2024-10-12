@@ -175,37 +175,21 @@ class joyMapClass:
         """
         self.map_wrench_val()
 
-        if (self.arrow_up_down != 0 and                                 # there is a X direction motion   
-            self.arrow_left_right == 0 and                              # there is no Y direction motion
-            self.square_button == 0 and self.circle_button == 0 and     # there is no YAW direction motion
-            self.triangle_button == 0 and self.x_button == 0):          # there is no Z direction motion
-            self.x_wrench_mapped = self.arrow_up_down * self.max_wrench_val
+        if (self.square_button == 0 and self.circle_button == 0 ):                                   # there is no YAW direction motion
+            self.x_wrench_mapped = self.arrow_up_down * self.max_wrench_val                          # maybe there is X direction motion
+            self.y_wrench_mapped = self.arrow_left_right * self.max_wrench_val                       # maybe there is no Y direction motion
+            self.z_wrench_mapped = (self.triangle_button + -1*self.x_button ) * self.max_wrench_val  # maybe there is no Z direction motion
+            self.yaw_wrench_mapped = 0
             return
         
-        elif (self.arrow_left_right != 0 and                            # there is a Y direction motion
-            self.arrow_up_down == 0 and                                 # there is no X direction motion
-            self.square_button == 0 and self.circle_button == 0         # there is no YAW direction motion
-            and self.triangle_button == 0 and self.x_button == 0):      # there is no Z direction motion
-            self.y_wrench_mapped = self.arrow_left_right * self.max_wrench_val
-            return
-        
-        elif ( (self.square_button != 0 or self.circle_button != 0) and # there is a YAW direction motion
+        elif ((self.square_button != 0 or self.circle_button != 0) and  # there is a YAW direction motion
             self.arrow_left_right == 0 and                              # there is no X direction motion
             self.arrow_up_down == 0 and                                 # there is no Y direction motion
             self.triangle_button == 0 and self.x_button == 0):          # there is no Z direction motion
-            self.yaw_wrench_mapped = ( self.circle_button + -1*self.square_button ) * self.max_wrench_val
-            return
-        
-        elif ( (self.triangle_button != 0 or self.x_button != 0) and    # there is a Z direction motion
-            self.arrow_left_right == 0 and                              # there is no X direction motion
-            self.arrow_up_down == 0 and                                 # there is no Y direction motion
-            self.square_button == 0 and self.circle_button == 0):       # there is no YAW direction motion
-            self.z_wrench_mapped = (self.triangle_button + -1*self.x_button ) * self.max_wrench_val
-            return
-        
-        else:
+            self.yaw_wrench_mapped = ( self.circle_button + -1*self.square_button ) * self.max_wrench_val / 2 
             self.x_wrench_mapped = 0
             self.y_wrench_mapped = 0
             self.z_wrench_mapped = 0
-            self.yaw_wrench_mapped = 0
+            return
+
         
