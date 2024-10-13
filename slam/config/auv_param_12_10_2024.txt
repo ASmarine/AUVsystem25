@@ -1,23 +1,23 @@
 Heave (down/+ve direction):
 Inertia term: 104.8941
-Hydrodynamic term: 362.5386
+Hydrodynamic term: 362.5386 # 0.5 * Rho * area * cd 
 
 Heave (up/-ve direction):
 Inertia term: 96.4141
-Hydrodynamic term: 2233.0651
-
+Hydrodynamic term: 2233.0651 # 0.5 * Rho * area * cd 
+                             #      1000       A*Cd
 Surge (fwd/+ve direction):
 Inertia term: 364.7894
-Hydrodynamic term: 290.209
+Hydrodynamic term: 290.209 # 0.5 * Rho * area * cd 
 
 Surge (bwd/-ve direction):
 Inertia term: 256.5592
-Hydrodynamic term: 385.2905
+Hydrodynamic term: 385.2905 # 0.5 * Rho * area * cd 
 
 Sway (symmetric):
 Inertia term: 265.3494
-Hydrodynamic term: 324.7808
+Hydrodynamic term: 324.7808 # 0.5 * Rho * area * cd 
 
 Yaw (symmetric):
 Inertia term: 7.5746
-Hydrodynamic term: 16.4977
+Hydrodynamic term: 16.4977 # 0.5 * Rho * area * cd 

@@ -6,6 +6,7 @@ Developer/s:
 Samer A. Mohamed, Hossam M. Elkeshky.
 """
 # Import relevant libraries
+import matplotlib.pyplot as plt
 import rospy
 import numpy as np
 from geometry_msgs.msg import WrenchStamped
@@ -27,8 +28,8 @@ I_matrix = np.array(rospy.get_param("/SLAM_node/I_matrix"))
 Tau_g = np.array(rospy.get_param("/SLAM_node/Tau_g"))
 Tau_b = np.array(rospy.get_param("/SLAM_node/Tau_b"))
 # Define AUV hydrodynamic parameters by system identification
-Drag_co = np.array(rospy.get_param("/SLAM_node/Drag_co"))
-Lift_co = np.array(rospy.get_param("/SLAM_node/Lift_co"))
+Drag_term = np.array(rospy.get_param("/SLAM_node/Drag_co"))
+Lift_term = np.array(rospy.get_param("/SLAM_node/Lift_co"))
 # Define motion model noise matrix
 R = np.array(rospy.get_param("/SLAM_node/R"))
 # Define output matrix "C"
@@ -129,13 +130,52 @@ def landmarks_callback(msg):
     Q_landmarks = np.diag(variance.flatten())
     Bolt_SLAM.predict(Bolt_SLAM.get_control(), msg.header.stamp.secs)
     Bolt_SLAM.correct_landmarks(landmarks_coord, Q_landmarks)
-    
+##################################################################################################################
+time_data = []
+wrench_Z_data = []
+acc_Z_data = []
+vel_Z_data = []
+pos_Z_data = []
+
 def callback_wrench(wrench_msg):
     # Execute prediction with each new control action
     """Edited --> changed the time stamp from integer seconds to float seconds"""
     Bolt_SLAM.predict([[wrench_msg.wrench.force.x], [wrench_msg.wrench.force.y], [wrench_msg.wrench.force.z],\
                                  [wrench_msg.wrench.torque.z]], float(wrench_msg.header.stamp.secs + wrench_msg.header.stamp.nsecs*1.0e-9)) 
-    
+    time_data.append(Bolt_SLAM.Time)
+    wrench_Z_data.append(Bolt_SLAM.U[2])
+    acc_Z_data.append(Bolt_SLAM.Mu_dot[6,0]) 
+    vel_Z_data.append(Bolt_SLAM.Mu_dot[2,0])
+    pos_Z_data.append(Bolt_SLAM.Mu[2,0])
+def plot_data():
+    # Plot the data after the node exits
+    plt.figure(figsize=(10, 8))
+
+    # Set the overall title of the figure
+    plt.suptitle('Prediction of Z motion', fontsize=16)
+
+    plt.subplot(4, 1, 1)
+    plt.plot(time_data, wrench_Z_data, label='Wrench Z')
+    plt.ylabel('Wrench Z')
+
+    plt.subplot(4, 1, 2)
+    plt.plot(time_data, acc_Z_data, label='Acc Z')
+    plt.ylabel('Acc Z')
+
+    plt.subplot(4, 1, 3)
+    plt.plot(time_data, vel_Z_data, label='Vel Z')
+    plt.ylabel('Vel Z')
+
+    plt.subplot(4, 1, 4)
+    plt.plot(time_data, pos_Z_data, label='Pos Z')
+    plt.ylabel('Pos Z')
+    plt.xlabel('Time')
+
+    plt.tight_layout()
+    plt.savefig('/home/radojr/catkin_workspace/src/slam/fig/Prediction_-ve_Z_plot.png')  # Save the figure
+    plt.show()
+    print("Plot saved")
+##################################################################################################################
 def callback_imu(imu_msg):
 # Get yaw value in radians
     orientation_euler = euler_from_quaternion([imu_msg.orientation.x, imu_msg.orientation.y,\
@@ -190,7 +230,7 @@ if __name__ == '__main__':
     rospy.init_node('EKFO_landmarks', anonymous=True)
     rospy.loginfo("SLAM begins......")
     # Set up SLAM object
-    Bolt_SLAM = EKF(AUV_mass, AUV_added_mass, I_matrix, Tau_g, Tau_b, Drag_co, Lift_co, rospy.get_time(), R, C)
+    Bolt_SLAM = EKF(AUV_mass, AUV_added_mass, I_matrix, Tau_g, Tau_b, Drag_term, Lift_term, rospy.get_time(), R, C)
     # Setting up publishers and subscribers
     sub_wrench = rospy.Subscriber("/Wrench", WrenchStamped, callback_wrench)
     sub_imu = rospy.Subscriber("/imu_processed", Imu, callback_imu)
@@ -200,3 +240,5 @@ if __name__ == '__main__':
 
     while not rospy.is_shutdown():
         rospy.spin()
+
+    plot_data()

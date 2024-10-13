@@ -17,8 +17,8 @@ class EKF:
         - I_matrix(numpy array): AUV inertial matrix.
         - Tau_g(numpy array): AUV weight vector in N.
         - Tau_b(numpy array): AUV buoyancy vector in N.
-        - Drag_co(numpy array): Drag co-efficients matrix.
-        - Lift_co(numpy array): Lift co-efficients matrix.
+        - Drag_term(numpy array): Drag co-efficients matrix.
+        - Lift_term(numpy array): Lift co-efficients matrix.
         - C_matrix(numpy array): Total Coriolis matrix.
         - U(numpy array): Control action vector.
         - G(numpy array): Jacobian matrix.
@@ -30,7 +30,7 @@ class EKF:
     Developer/s:
         Samer A. Mohamed, Hossam M. Elkeshky.
     """
-    def __init__(self, AUV_mass, AUV_added_mass, I_matrix, Tau_g, Tau_b, Drag_co, Lift_co, Time, R, C):
+    def __init__(self, AUV_mass, AUV_added_mass, I_matrix, Tau_g, Tau_b, Drag_term, Lift_term, Time, R, C):
         """
         Class constructor: initializes some attributes regarding our
         AUV's inertial parameters, hydrostatics and hydrodynamics
@@ -41,8 +41,8 @@ class EKF:
             - I_matrix(numpy array): AUV inertial matrix
             - Tau_g(numpy array): AUV weight vector in N.
             - Tau_b(numpy array): AUV buoyancy vector in N.
-            - Drag_co(numpy array): Drag co-efficients matrix.
-            - Lift_co(numpy array): Lift co-efficients matrix.
+            - Drag_term(numpy array): Drag co-efficients matrix.
+            - Lift_term(numpy array): Lift co-efficients matrix.
             - Time(float): Time of class creation.
             - R(numpy array): motion model noise matrix.
             - C(numpy array): output matrix.
@@ -68,8 +68,8 @@ class EKF:
         self.I_matrix = I_matrix
         self.Tau_g = Tau_g
         self.Tau_b = Tau_b
-        self.Drag_co = Drag_co
-        self.Lift_co = Lift_co
+        self.Drag_term = -1*Drag_term
+        self.Lift_term = Lift_term
         
         # Initialize control action & jacobian
         self.U = np.zeros((4,1))
@@ -111,15 +111,30 @@ class EKF:
         # Update control action for usage with update step
         # on receiving sensory data
         self.U = U
-        Inverse_I_matrix = np.linalg.inv(self.I_matrix)
 
+        # Calculate drag and lift terms
+        if self.Mu[4,0] < 0.0:              # Surge (up/-ve direction)
+            self.I_matrix[0,0] = 256.5592
+            self.Drag_term[0,0] = -385.2905
+        else:                               # Surge (up/+ve direction)
+            self.I_matrix[0,0] = 364.7894
+            self.Drag_term[0,0] = -290.209 
+
+        if self.Mu[6,0] < 0.0:              # Heave (up/-ve direction)
+            self.I_matrix[2,2] = 96.4141
+            self.Drag_term[2,2] = -2233.0651
+        else:                               # Heave (up/+ve direction)
+            self.I_matrix[2,2] = 104.8941
+            self.Drag_term[2,2] = -362.5386
+
+        Inverse_I_matrix = np.linalg.inv(self.I_matrix)
         # Prediction step:
         # 1 - Full dynamic model equation
         V_local = self.Mu[4:8,0].reshape(-1,1)
-        """"converted the + sign to a - sign"""
+        """" converted the + sign to a - sign """
         """" lift force term needs to be revised """
-        M_V_dot = U - self.Tau_b - self.Tau_g - (self.Drag_co @ (V_local * abs(V_local))) - (self.Lift_co @ (V_local * V_local))
-        
+        M_V_dot = U + (self.Drag_term @ (V_local * abs(V_local))) 
+
         # 3 - calculate local V_dot
         """"Edited change the matrix multiplication to @"""
         V_local_dot = Inverse_I_matrix @ M_V_dot
@@ -150,22 +165,22 @@ class EKF:
         self.G[3,7] = Time - self.Time
         
         # 5-e- fifth row "Vx"
-        self.G[4,4] = self.G[4,4] + ((Time - self.Time) * Inverse_I_matrix[0,0] * 2.0 * self.Drag_co[0, 0] * V_local[0,0])
+        self.G[4,4] = self.G[4,4] + ((Time - self.Time) * Inverse_I_matrix[0,0] * 2.0 * self.Drag_term[0, 0] * V_local[0,0])
 
         # 5-f- sixth row "Vy"
-        self.G[5,5] = self.G[5,5] + ((Time - self.Time) * 2.0 * Inverse_I_matrix[1,1] * self.Drag_co[1,1] * V_local[1,0])
+        self.G[5,5] = self.G[5,5] + ((Time - self.Time) * 2.0 * Inverse_I_matrix[1,1] * self.Drag_term[1,1] * V_local[1,0])
 
         # 5-g- seventh row "Vz"
-        self.G[6,4] = Inverse_I_matrix[2,2] * 2.0 * self.Lift_co[2,0] * V_local[0,0] * (Time - self.Time)
-        self.G[6,5] = Inverse_I_matrix[2,2] * 2.0 * self.Lift_co[2,1] * V_local[1,0] * (Time - self.Time)
-        self.G[6,6] = self.G[6,6] + ((Time - self.Time) * Inverse_I_matrix[2,2] * 2.0 * self.Drag_co[2,2] * V_local[2,0])
+        self.G[6,4] = Inverse_I_matrix[2,2] * 2.0 * self.Lift_term[2,0] * V_local[0,0] * (Time - self.Time)
+        self.G[6,5] = Inverse_I_matrix[2,2] * 2.0 * self.Lift_term[2,1] * V_local[1,0] * (Time - self.Time)
+        self.G[6,6] = self.G[6,6] + ((Time - self.Time) * Inverse_I_matrix[2,2] * 2.0 * self.Drag_term[2,2] * V_local[2,0])
 
         # 5-h- eighth row "w_yaw"
-        self.G[7,7] = self.G[7,7] + ((Time - self.Time) * 2.0 * self.Drag_co[3,3] * V_local[3,0] * Inverse_I_matrix[3,3])
+        self.G[7,7] = self.G[7,7] + ((Time - self.Time) * 2.0 * self.Drag_term[3,3] * V_local[3,0] * Inverse_I_matrix[3,3])
 
         # 6 - Update mean
         self.Mu[0:8,0] = self.Mu[0:8,0] + ((Time - self.Time) * self.Mu_dot[0:8,0])
-        print(self.COV_matrix)
+        
         # 7 - Update Covariance matrix
         self.COV_matrix[0:8,0:8] = self.G @ self.COV_matrix[0:8,0:8] @ np.transpose(self.G) + self.R
 
