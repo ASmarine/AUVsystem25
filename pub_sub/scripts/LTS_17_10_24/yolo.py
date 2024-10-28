@@ -125,7 +125,7 @@ bridge = CvBridge()
 det_pub = rospy.Publisher('/landmarks', Multi_instance, queue_size=100)
 
 # Subscribe to the image and point cloud topics
-rospy.Subscriber('/zed/left_image_rect', Image, image_callback)
+rospy.Subscriber('/zed/zed_node/left/image_rect_color', Image, image_callback)
 rospy.Subscriber('/zed/PC', PointCloud2, pointcloud_callback)
 
 # Run YOLO model at approximately 15 Hz using a timer
