@@ -65,6 +65,7 @@ def yolo_model():
         result = model.predict(source=cvt_img, show=False, conf=0.30)
 
         perc23_msg = Multi_instance()
+        perc23_msg.header.stamp = rospy.Time.now()
         num_of_instances = result[0].boxes.data.size()[0]
 
         if num_of_instances == 0:
