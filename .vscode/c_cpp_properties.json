@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/mahmoud/auv_2025/devel/include/**",
+        "/home/mahmoud/auv_sim/auvSim/devel/include/**",
+        "/home/mahmoud/beginner_tutorials/devel/include/**",
+        "/home/mahmoud/NewFolder/ExoSkelton/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/mahmoud/auv_2025/src/HOSMC/include/**",
+        "/home/mahmoud/NewFolder/ExoSkelton/src/cob_gazebo_plugins/cob_gazebo_ros_control/include/**",
+        "/home/mahmoud/beginner_tutorials/src/test/include/**",
+        "/home/mahmoud/auv_sim/auvSim/src/uuv_simulator-master/uuv_gazebo_plugins/uuv_gazebo_plugins/include/**",
+        "/home/mahmoud/auv_sim/auvSim/src/uuv_simulator-master/uuv_gazebo_plugins/uuv_gazebo_ros_plugins/include/**",
+        "/home/mahmoud/auv_sim/auvSim/src/uuv_simulator-master/uuv_sensor_plugins/uuv_sensor_ros_plugins/include/**",
+        "/home/mahmoud/auv_sim/auvSim/src/uuv_simulator-master/uuv_world_plugins/uuv_world_plugins/include/**",
+        "/home/mahmoud/auv_sim/auvSim/src/uuv_simulator-master/uuv_world_plugins/uuv_world_ros_plugins/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
