@@ -1,0 +1,8 @@
+# Path tracker parameters
+lookahead_distance: 1.0    # Lookahead distance for LOS guidance
+dt: 0.1                    # Time step for discrete differentiation
+
+# PID gains
+Kp: 1.0                    # Proportional gain
+Ki: 0.01                   # Integral gain
+Kd: 0.1                    # Derivative gain

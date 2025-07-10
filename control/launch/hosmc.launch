@@ -1,0 +1,7 @@
+<launch>
+    <!-- Load parameters -->
+    <rosparam file="$(find control)/config/hosmc_params.yaml" command="load" />
+
+    <!-- Launch the node -->
+    <node name="hosmc_node_py" pkg="control" type="hosmc_node_py.py" output="screen" />
+</launch>

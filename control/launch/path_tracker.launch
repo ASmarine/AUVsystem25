@@ -1,0 +1,7 @@
+<launch>
+    <!-- Load parameters -->
+    <rosparam file="$(find control)/config/path_tracker_params.yaml" command="load" />
+
+    <!-- Launch the node -->
+    <node name="path_tracker_node" pkg="control" type="path_tracker_node" output="screen"/>
+</launch>
